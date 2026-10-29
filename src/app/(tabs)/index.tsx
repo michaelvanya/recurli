@@ -8,15 +8,15 @@ import {
   UPCOMING_SUBSCRIPTIONS,
   balance,
   user_name,
-} from "../../constants/home_data/h.data";
+} from "@/constants/home_data/h.data";
 
 
 
 
-import { EmptyState } from "../../components/EmptyState";
-import { HomeHeader } from "../../components/HomeHeader";
-import { SubscriptionRow } from "../../components/SubscriptionRow";
-import type { HomeSubscription } from "../../components/types";
+import { EmptyState } from "@/components/EmptyState";
+import { HomeHeader } from "@/components/HomeHeader";
+import { SubscriptionRow } from "@/components/SubscriptionRow";
+import type { HomeSubscription } from "@/components/types";
 
 const SafeAreaView = styled(RnSafeAreaView);
 
