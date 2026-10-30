@@ -8,7 +8,11 @@ import { handleAddSubscription } from "./actions";
 // Computed once at load, not on every render.
 const INITIALS = getInitials(user_name.name);
 
-function ProfileHeaderBase() {
+type ProfileHeaderProps = {
+  onAddSubscription?: () => void;
+};
+
+function ProfileHeaderBase({ onAddSubscription }: ProfileHeaderProps) {
   return (
     <View className="flex-row items-center justify-between px-6 pt-5 pb-7">
       <View className="flex-row items-center gap-3">
@@ -32,7 +36,7 @@ function ProfileHeaderBase() {
         accessibilityRole="button"
         accessibilityLabel="Add subscription"
         className="h-14 w-14 items-center justify-center rounded-full border border-border"
-        onPress={handleAddSubscription}
+        onPress={onAddSubscription ?? handleAddSubscription}
       >
         <Text className="font-roboto-light text-4xl text-foreground">+</Text>
       </Pressable>

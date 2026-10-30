@@ -7,10 +7,14 @@ import { ProfileHeader } from "./ProfileHeader";
 import { SectionHeader } from "./SectionHeader";
 import { UpcomingSection } from "./UpcomingSection";
 
-function HomeHeaderBase() {
+type HomeHeaderProps = {
+  onAddSubscription?: () => void;
+};
+
+function HomeHeaderBase({ onAddSubscription }: HomeHeaderProps) {
   return (
     <View>
-      <ProfileHeader />
+      <ProfileHeader onAddSubscription={onAddSubscription} />
       <BalanceCard />
       <UpcomingSection />
       <SectionHeader

@@ -7,6 +7,7 @@ import { tabs } from '@/constants/data'
 import clsx from 'clsx'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { components , colors} from '@/constants/theme'
+import { SubscriptionProvider } from '@/contexts/SubscriptionContext'
 
 
 const tabBar = components.tabBar
@@ -49,7 +50,8 @@ const Tablayout = () => {
 
     
   return (
-    <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: false , tabBarStyle:{
+    <SubscriptionProvider>
+      <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: false , tabBarStyle:{
         position: 'absolute',
         bottom: Math.max(insets.bottom, tabBar.horizontalInset),
         height: tabBar.height,
@@ -86,6 +88,7 @@ const Tablayout = () => {
         );
       })}
     </Tabs>
+    </SubscriptionProvider>
   )
 }
 

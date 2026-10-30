@@ -1,21 +1,13 @@
-import { memo, useCallback } from "react";
-import { FlatList, Pressable, StatusBar, Text, View } from "react-native";
+import { useCallback, useState } from "react";
+import { FlatList, StatusBar, View } from "react-native";
 import { SafeAreaView as RnSafeAreaView } from "react-native-safe-area-context";
 import { styled } from "nativewind";
 
-import {
-  HOME_SUBSCRIPTIONS,
-  UPCOMING_SUBSCRIPTIONS,
-  balance,
-  user_name,
-} from "@/constants/home_data/h.data";
-
-
-
-
+import { CreateSubscriptionModal, type NewSubscriptionData } from "@/components/CreateSubscriptionModal";
 import { EmptyState } from "@/components/EmptyState";
 import { HomeHeader } from "@/components/HomeHeader";
 import { SubscriptionRow } from "@/components/SubscriptionRow";
+import { useSubscriptions } from "@/contexts/SubscriptionContext";
 import type { HomeSubscription } from "@/components/types";
 
 const SafeAreaView = styled(RnSafeAreaView);
@@ -29,15 +21,29 @@ const renderItem = ({ item }: { item: HomeSubscription }) => (
 const Separator = () => <View className="h-4" />;
 
 export default function Index() {
+  const { subscriptions, addSubscription } = useSubscriptions();
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const handleAddSubscriptionPress = useCallback(() => {
+    setShowCreateModal(true);
+  }, []);
+
+  const handleCreateSubscription = useCallback((newSub: NewSubscriptionData) => {
+    addSubscription(newSub as HomeSubscription);
+    setShowCreateModal(false);
+  }, [addSubscription]);
+
   return (
     <SafeAreaView className="flex-1 bg-background">
       <StatusBar barStyle="dark-content" backgroundColor="#FFF9E3" />
 
       <FlatList
-        data={HOME_SUBSCRIPTIONS}
+        data={subscriptions}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
-        ListHeaderComponent={HomeHeader}
+        ListHeaderComponent={() => (
+          <HomeHeader onAddSubscription={handleAddSubscriptionPress} />
+        )}
         ListEmptyComponent={EmptyState}
         ItemSeparatorComponent={Separator}
         contentContainerStyle={CONTENT_STYLE}
@@ -46,6 +52,12 @@ export default function Index() {
         maxToRenderPerBatch={6}
         windowSize={7}
         removeClippedSubviews
+      />
+
+      <CreateSubscriptionModal
+        visible={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onCreate={handleCreateSubscription}
       />
     </SafeAreaView>
   );
