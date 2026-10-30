@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { FlatList, StatusBar, View } from "react-native";
+import { Dimensions, FlatList, StatusBar, View } from "react-native";
 import { SafeAreaView as RnSafeAreaView } from "react-native-safe-area-context";
 import { styled } from "nativewind";
 
@@ -12,7 +12,11 @@ import type { HomeSubscription } from "@/components/types";
 
 const SafeAreaView = styled(RnSafeAreaView);
 
-const CONTENT_STYLE = { paddingBottom: 24 } as const;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const IS_SMALL = SCREEN_WIDTH < 375;
+const BOTTOM_PADDING = IS_SMALL ? 80 : 100;
+
+const CONTENT_STYLE = { paddingBottom: BOTTOM_PADDING } as const;
 
 const keyExtractor = (item: HomeSubscription) => item.id;
 const renderItem = ({ item }: { item: HomeSubscription }) => (

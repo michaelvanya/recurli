@@ -1,5 +1,9 @@
 import { memo } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Dimensions, Pressable, Text, View } from "react-native";
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const IS_SMALL = SCREEN_WIDTH < 375;
+const TITLE_SIZE = IS_SMALL ? 20 : 25;
 
 type Props = {
   title: string;
@@ -12,7 +16,7 @@ function SectionHeaderBase({ title, onPressViewAll, className = "" }: Props) {
     <View
       className={`mb-5 flex-row items-center justify-between ${className}`}
     >
-      <Text className="font-roboto-bold text-[25px] text-foreground">
+      <Text style={{ fontSize: TITLE_SIZE }} className="font-roboto-bold text-foreground">
         {title}
       </Text>
 

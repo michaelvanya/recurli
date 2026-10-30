@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { FlatList, View } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 
 import { UPCOMING_SUBSCRIPTIONS } from "../constants/home_data/h.data";
 import { handleViewAllUpcoming } from "./actions";
@@ -7,9 +7,12 @@ import { SectionHeader } from "./SectionHeader";
 import { UpcomingCard } from "./UpcomingCard";
 import type { UpcomingSubscription } from "./types";
 
-const CARD_WIDTH = 245;
-const GAP = 12;
-const PADDING = 24;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const IS_SMALL = SCREEN_WIDTH < 375;
+const CARD_WIDTH = IS_SMALL ? 215 : 245;
+const GAP = IS_SMALL ? 8 : 12;
+const PADDING = IS_SMALL ? 16 : 24;
+const BOTTOM_MARGIN = IS_SMALL ? 20 : 36;
 
 const CONTENT_STYLE = { paddingHorizontal: PADDING } as const;
 const SEPARATOR_STYLE = { width: GAP } as const;
@@ -30,7 +33,7 @@ const renderItem = ({ item }: { item: UpcomingSubscription }) => (
 
 function UpcomingSectionBase() {
   return (
-    <View className="mb-9">
+    <View style={{ marginBottom: BOTTOM_MARGIN }}>
       <SectionHeader
         title="Upcoming"
         onPressViewAll={handleViewAllUpcoming}

@@ -1,9 +1,17 @@
 import { memo, useCallback } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Dimensions, Pressable, Text, View } from "react-native";
 
 import { formatDate, formatPrice } from "./format";
 import { handleSelect } from "./actions";
 import type { HomeSubscription } from "./types";
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const IS_SMALL = SCREEN_WIDTH < 375;
+const H_PADDING = IS_SMALL ? 16 : 24;
+const MIN_HEIGHT = IS_SMALL ? 110 : 132;
+const ICON_SIZE = IS_SMALL ? 54 : 66;
+const NAME_SIZE = IS_SMALL ? 18 : 22;
+const PRICE_SIZE = IS_SMALL ? 17 : 21;
 
 type Props = { item: HomeSubscription };
 
@@ -11,36 +19,36 @@ function SubscriptionRowBase({ item }: Props) {
   const onPress = useCallback(() => handleSelect(item.name), [item.name]);
 
   return (
-    <View className="px-6">
+    <View style={{ paddingHorizontal: H_PADDING }}>
       <Pressable
-        className={`min-h-[132px] flex-row items-center rounded-[27px] ${item.color} px-5 py-5`}
+        style={{ minHeight: MIN_HEIGHT, borderRadius: 27, backgroundColor: item.color.replace('bg-[', '').replace(']', ''), paddingHorizontal: 20, paddingVertical: 20, flexDirection: 'row', alignItems: 'center' }}
         onPress={onPress}
       >
         <View
-          className={`mr-4 h-[66px] w-[66px] items-center justify-center rounded-2xl ${item.iconBg}`}
+          style={{ marginRight: 16, width: ICON_SIZE, height: ICON_SIZE, borderRadius: 12, backgroundColor: item.iconBg.replace('bg-[', '').replace(']', ''), justifyContent: 'center', alignItems: 'center' }}
         >
-          <Text className="font-roboto-bold text-3xl text-foreground">
+          <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#081126', fontFamily: 'Roboto-Bold' }}>
             {item.icon}
           </Text>
         </View>
 
-        <View className="flex-1">
+        <View style={{ flex: 1 }}>
           <Text
             numberOfLines={1}
-            className="font-roboto-bold text-[22px] text-foreground"
+            style={{ fontSize: NAME_SIZE, fontWeight: 'bold', color: '#081126', fontFamily: 'Roboto-Bold' }}
           >
             {item.name}
           </Text>
-          <Text className="mt-2 font-roboto-medium text-sm text-foreground/60">
+          <Text style={{ marginTop: 8, fontSize: 13, color: 'rgba(0,0,0,0.6)', fontFamily: 'Roboto-Medium' }}>
             {formatDate(item.renewalDate)}
           </Text>
         </View>
 
-        <View className="items-end pl-2">
-          <Text className="font-roboto-bold text-[21px] text-foreground">
+        <View style={{ alignItems: 'flex-end', paddingLeft: 8 }}>
+          <Text style={{ fontSize: PRICE_SIZE, fontWeight: 'bold', color: '#081126', fontFamily: 'Roboto-Bold' }}>
             {formatPrice(item.price, item.currency)}
           </Text>
-          <Text className="mt-2 font-roboto-medium text-sm text-foreground/60">
+          <Text style={{ marginTop: 8, fontSize: 13, color: 'rgba(0,0,0,0.6)', fontFamily: 'Roboto-Medium' }}>
             {item.billing === "Monthly" ? "per month" : "per year"}
           </Text>
         </View>

@@ -12,26 +12,27 @@ if (!publishableKey) {
   throw new Error('Add your Clerk Publishable Key to the .env file');
 }
 
+// Preload fonts once at module level
+const fontMapping = {
+  "Roboto-Black": require("../../assets/fonts/Roboto-Black.ttf"),
+  "Roboto-BlackItalic": require("../../assets/fonts/Roboto-BlackItalic.ttf"),
+  "Roboto-Bold": require("../../assets/fonts/Roboto-Bold.ttf"),
+  "Roboto-ExtraBold": require("../../assets/fonts/Roboto-ExtraBold.ttf"),
+  "Roboto-Light": require("../../assets/fonts/Roboto-Light.ttf"),
+  "Roboto-Medium": require("@/assets/fonts/Roboto-Medium.ttf"),
+  "Roboto-Regular": require("@/assets/fonts/Roboto-Regular.ttf"),
+  "Roboto-SemiBold": require("@/assets/fonts/Roboto-SemiBold.ttf"),
+  "Roboto-Thin": require("@/assets/fonts/Roboto-Thin.ttf"),
+};
+
 export default function RootLayout() {
+  SplashScreen.preventAutoHideAsync();
 
-SplashScreen.preventAutoHideAsync()
-   const [fontsLoaded, fontError] = useFonts({
-    "Roboto-Black": require("../../assets/fonts/Roboto-Black.ttf"),
-    "Roboto-BlackItalic": require("../../assets/fonts/Roboto-BlackItalic.ttf"),
-    "Roboto-Bold": require("../../assets/fonts/Roboto-Bold.ttf"),
-    "Roboto-ExtraBold": require("../../assets/fonts/Roboto-ExtraBold.ttf"),
-    "Roboto-Light": require("../../assets/fonts/Roboto-Light.ttf"),
-    "Roboto-Medium": require("@/assets/fonts/Roboto-Medium.ttf"),
-    "Roboto-Regular": require("@/assets/fonts/Roboto-Regular.ttf"),
-    "Roboto-SemiBold": require("@/assets/fonts/Roboto-SemiBold.ttf"),
-    "Roboto-Thin": require("@/assets/fonts/Roboto-Thin.ttf"),
-  });
-
+  const [fontsLoaded, fontError] = useFonts(fontMapping);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
-
     }
   }, [fontsLoaded, fontError]);
 
@@ -41,7 +42,7 @@ SplashScreen.preventAutoHideAsync()
 
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <Stack screenOptions={{ headerShown:false}}/>
+      <Stack screenOptions={{ headerShown: false }} />
     </ClerkProvider>
   );
 }

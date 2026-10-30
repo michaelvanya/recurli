@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import {
+  Dimensions,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -45,6 +46,12 @@ const CATEGORY_ICONS: Record<string, string> = {
   'Other': '●',
 }
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+const IS_SMALL = SCREEN_WIDTH < 375
+const H_PADDING = IS_SMALL ? 16 : 20
+const PADDING_BOTTOM = IS_SMALL ? 16 : 24
+const TOP_PADDING = IS_SMALL ? 12 : 16
+
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
@@ -59,15 +66,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff9e3',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    paddingBottom: 24,
+    paddingBottom: PADDING_BOTTOM,
     maxHeight: '90%',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: H_PADDING,
+    paddingVertical: TOP_PADDING,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0,0,0,0.08)',
   },
@@ -89,8 +96,8 @@ const styles = StyleSheet.create({
     color: '#081126',
   },
   formContent: {
-    paddingHorizontal: 20,
-    gap: 16,
+    paddingHorizontal: H_PADDING,
+    gap: IS_SMALL ? 12 : 16,
   },
   label: {
     fontSize: 14,

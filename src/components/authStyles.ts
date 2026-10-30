@@ -1,10 +1,18 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+const IS_SMALL = SCREEN_WIDTH < 375
+const H_PADDING = IS_SMALL ? 16 : 20
+const FORM_PADDING = IS_SMALL ? 20 : 24
+const FORM_TOP_PADDING = IS_SMALL ? 48 : 64
+const LOGO_MARGIN = IS_SMALL ? 28 : 40
+const WELCOME_SIZE = IS_SMALL ? 24 : 28
 
 export const authStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff9e3',
-    padding: 20,
+    padding: H_PADDING,
   },
   loadingContainer: {
     flex: 1,
@@ -29,7 +37,7 @@ export const authStyles = StyleSheet.create({
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: LOGO_MARGIN,
   },
   logoIcon: {
     width: 48,
@@ -56,7 +64,7 @@ export const authStyles = StyleSheet.create({
     letterSpacing: 1,
   },
   welcomeTitle: {
-    fontSize: 28,
+    fontSize: WELCOME_SIZE,
     fontWeight: 'bold',
     color: '#081126',
     marginBottom: 8,
@@ -69,8 +77,8 @@ export const authStyles = StyleSheet.create({
   formContainer: {
     backgroundColor: '#fff8e7',
     borderRadius: 16,
-    padding: 24,
-    paddingTop: 64,
+    padding: FORM_PADDING,
+    paddingTop: FORM_TOP_PADDING,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.1)',
   },

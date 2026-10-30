@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView as RnSafeAreaView } from "react-native-safe-area-context";
 import { styled } from "nativewind";
 import { SubscriptionCard } from "@/components/SubscriptionCard";
@@ -10,14 +10,21 @@ import type { HomeSubscription } from "@/components/types";
 
 const SafeAreaView = styled(RnSafeAreaView);
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const IS_SMALL = SCREEN_WIDTH < 375;
+const H_PADDING = IS_SMALL ? 16 : 20;
+const V_PADDING = IS_SMALL ? 12 : 16;
+const LIST_PADDING = IS_SMALL ? 12 : 16;
+const BOTTOM_PADDING = IS_SMALL ? 80 : 100;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff9e3',
   },
   header: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: H_PADDING,
+    paddingVertical: V_PADDING,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0,0,0,0.08)',
   },
@@ -28,8 +35,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   listContent: {
-    padding: 16,
+    padding: LIST_PADDING,
     gap: 8,
+    paddingBottom: BOTTOM_PADDING,
   },
   emptyContainer: {
     flex: 1,
@@ -44,7 +52,7 @@ const styles = StyleSheet.create({
   },
   activeFiltersContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
+    paddingHorizontal: H_PADDING,
     paddingVertical: 8,
     gap: 8,
     flexWrap: 'wrap',
@@ -165,22 +173,29 @@ export default function Subscriptions() {
         </View>
       )}
 
-      <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
-        {filteredSubscriptions.length > 0 ? (
-          filteredSubscriptions.map((sub) => (
-            <SubscriptionCard
-              key={sub.id}
-              item={sub}
-              isSelected={selectedId === sub.id}
-              onPress={() => toggleSelect(sub.id)}
-            />
-          ))
-        ) : (
+      <FlatList
+        data={filteredSubscriptions}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <SubscriptionCard
+            item={item}
+            isSelected={selectedId === item.id}
+            onPress={() => toggleSelect(item.id)}
+          />
+        )}
+        ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No subscriptions found</Text>
           </View>
-        )}
-      </ScrollView>
+        }
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={6}
+        maxToRenderPerBatch={6}
+        windowSize={7}
+        removeClippedSubviews
+        ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+      />
 
       <FilterPanel
         visible={showFilterPanel}

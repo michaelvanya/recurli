@@ -1,6 +1,11 @@
 import { memo } from 'react'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
 import type { HomeSubscription } from '@/components/types'
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+const IS_SMALL = SCREEN_WIDTH < 375
+const CARD_PADDING = IS_SMALL ? 12 : 16
+const ICON_SIZE = IS_SMALL ? 40 : 48
 
 const styles = StyleSheet.create({
   cardWrapper: {
@@ -9,7 +14,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff8e7',
     borderRadius: 16,
-    padding: 16,
+    padding: CARD_PADDING,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.08)',
   },
@@ -22,12 +27,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconBox: {
-    width: 48,
-    height: 48,
+    width: ICON_SIZE,
+    height: ICON_SIZE,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: IS_SMALL ? 8 : 12,
   },
   iconCircle: {
     width: 36,
@@ -72,9 +77,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    padding: 16,
-    paddingTop: 12,
-    gap: 14,
+    padding: CARD_PADDING,
+    paddingTop: IS_SMALL ? 8 : 12,
+    gap: IS_SMALL ? 10 : 14,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.12)',
     marginTop: -4,
